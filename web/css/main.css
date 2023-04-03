@@ -1,0 +1,74 @@
+.site-login{
+    width:40%
+}
+
+.pre-register{
+    padding-top: 15px;
+}
+
+.navbar-nav2{
+    display: flex;
+    justify-content: flex-end;
+    width: 710px;
+}
+
+/*Booking/Index*/
+
+.fixed-container{
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 310px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #1B1C1E; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding: 75px 20px;
+    color: white;
+}
+
+.lodge_card-container{
+    margin-left: 310px;
+}
+
+.sort_price, .sort_quant{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.icon_sort{
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.сalendar_row-filter{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.margin-right{
+    margin-right: 20px;
+}
+
+.button-find{
+    width: 130px;
+    height: 37px;
+}
+
+.form-guest{
+    width: 50%;
+}
+
+.margin-bottom{
+    margin-bottom: 20px;
+}
+
+.margin-top{
+    margin-top: 30px;
+}

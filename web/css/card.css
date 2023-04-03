@@ -1,0 +1,129 @@
+.card-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 40px 0;
+    border: 1px solid #0c4128;
+    padding: 10px 20px;
+}
+
+.card-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.card-content_photo img{
+    height: 300px;
+    margin: 10px;
+}
+
+.card-content_description{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.card-title{
+    font-size: 24px;
+    margin: 0 10px;
+}
+
+.card_icons{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.icon{
+    margin: 10px 10px;
+    width: 30px;
+    height: 27px;
+}
+
+.card_about{
+    text-indent: 20px;
+    font-size: 18px;
+    line-height: 23px;
+    text-align: justify;
+}
+
+.card-booking{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.booking_price, .booking_button{
+    font-size: 16px;
+    line-height: 21px;
+}
+
+.booking_prices{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 10px;
+    height: 130px;
+}
+
+.persons{
+    margin: 5px 10px;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+details{
+    text-indent: 25px;
+}
+
+.details{
+    text-indent: 25px;
+    font-size: 16px;
+    line-height: 21px;
+    text-align: justify;
+    padding-left: 20px;
+}
+
+/* Tooltip container */
+.tooltipp {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.tooltipp .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 10px 7px;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipp:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltipp .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
