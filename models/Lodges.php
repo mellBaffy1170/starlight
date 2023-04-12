@@ -14,9 +14,9 @@ use Yii;
  * @property string $description
  * @property int $price
  * @property int $price_0_3
- * @property int $price_4_7
- * @property int $price_8_12
+ * @property int $price_4_12
  * @property int $sleeping_places
+ * @property int $add_places
  * @property int $terrace 0-false, 1-true
  * @property int $fridge 0-false, 1-true
  * @property int $tv 0-false, 1-true
@@ -46,8 +46,8 @@ class Lodges extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'main_image', 'lodge_plan', 'description', 'price', 'price_0_3', 'price_4_7', 'price_8_12', 'sleeping_places', 'terrace', 'fridge', 'tv', 'wi_fi', 'shower', 'dishes', 'children', 'pets'], 'required'],
-            [['price', 'price_0_3', 'price_4_7', 'price_8_12', 'sleeping_places', 'terrace', 'fridge', 'tv', 'wi_fi', 'shower', 'dishes', 'children', 'pets'], 'integer'],
+            [['title', 'main_image', 'lodge_plan', 'description', 'price', 'price_0_3', 'price_4_12', 'sleeping_places', 'add_places', 'terrace', 'fridge', 'tv', 'wi_fi', 'shower', 'dishes', 'children', 'pets'], 'required'],
+            [['price', 'price_0_3', 'price_4_12', 'sleeping_places', 'add_places', 'terrace', 'fridge', 'tv', 'wi_fi', 'shower', 'dishes', 'children', 'pets'], 'integer'],
             [['title', 'main_image', 'lodge_plan'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 10000],
         ];
@@ -66,9 +66,9 @@ class Lodges extends \yii\db\ActiveRecord
             'description' => 'Description',
             'price' => 'Price',
             'price_0_3' => 'Price 0 3',
-            'price_4_7' => 'Price 4 7',
-            'price_8_12' => 'Price 8 12',
+            'price_4_12' => 'Price 4 12',
             'sleeping_places' => 'Sleeping Places',
+            'add_places' => 'Add Places',
             'terrace' => 'Terrace',
             'fridge' => 'Fridge',
             'tv' => 'Tv',

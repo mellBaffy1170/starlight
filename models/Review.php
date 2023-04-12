@@ -10,9 +10,11 @@ use Yii;
  * @property int $id
  * @property int $user_id
  * @property int $lodge_id
+ * @property int $booking_id
  * @property string $content
  * @property int $rating
  *
+ * @property Booking $booking
  * @property Lodges $lodge
  * @property User $user
  */
@@ -32,11 +34,12 @@ class Review extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'lodge_id', 'content', 'rating'], 'required'],
-            [['user_id', 'lodge_id', 'rating'], 'integer'],
+            [['user_id', 'lodge_id', 'booking_id', 'content', 'rating'], 'required'],
+            [['user_id', 'lodge_id', 'booking_id', 'rating'], 'integer'],
             [['content'], 'string', 'max' => 1000],
             [['lodge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lodges::class, 'targetAttribute' => ['lodge_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['booking_id'], 'exist', 'skipOnError' => true, 'targetClass' => Booking::class, 'targetAttribute' => ['booking_id' => 'id']],
         ];
     }
 
@@ -49,9 +52,20 @@ class Review extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'lodge_id' => 'Lodge ID',
+            'booking_id' => 'Booking ID',
             'content' => 'Content',
             'rating' => 'Rating',
         ];
+    }
+
+    /**
+     * Gets query for [[Booking]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBooking()
+    {
+        return $this->hasOne(Booking::class, ['id' => 'booking_id']);
     }
 
     /**
@@ -72,5 +86,10 @@ class Review extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public static function getAll()
+    {
+        return Review::find()->all();
     }
 }

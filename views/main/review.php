@@ -1,8 +1,23 @@
 <?php
 /** @var yii\web\View $this */
-?>
-<h1>main/review</h1>
+/** @var \app\models\Review[] $review_all */
 
-<p>
-    Это страница ОТЗЫВЫ <code><?= __FILE__; ?></code>.
-</p>
+use \app\widgets\ReviewWidget;
+?>
+
+<div class="reviews-container">
+    <?php
+
+    if(empty($review_all)){
+        echo "Ничего не найдено:(";
+    }
+    else{
+        foreach ($review_all as $review){
+            echo ReviewWidget::widget([
+                'review' =>$review,
+            ]);
+        }
+    }
+
+    ?>
+</div>

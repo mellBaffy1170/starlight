@@ -41,7 +41,7 @@ $currentUser = User::findIdentity(Yii::$app->user->id);
             <input class="form-control" type="text" placeholder="Номер телефона"  name="GuestCardForm[phoneNumber]"/>
         </div>
 
-        <?= Html::submitButton('Применить', ['class' => 'btn btn-dark', 'name' => 'filter-button']) ?>
+        <?= Html::submitButton('Создать', ['class' => 'btn btn-dark', 'name' => 'filter-button']) ?>
 
     <?php ActiveForm::end(); ?>
 </div>

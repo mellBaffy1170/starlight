@@ -3,19 +3,22 @@
 namespace app\models;
 
 use yii\base\Model;
+use yii\data\Sort;
 use \yii\db\Query;
 
 class DataForm extends Model
 {
     public $dates;
-    public $quantity;
+    public $quantity_adults;
+    public $quantity_kids;
+
 //    public $start_date = mb_substr($dates, 0, 10);
 //    public $end_date = mb_substr($dates, -10);
 
     public function rules()
     {
         return [
-            [['dates', 'quantity'], 'required'],
+            [['dates', 'quantity_adults', 'quantity_kids'], 'required'],
         ];
     }
 
@@ -34,23 +37,19 @@ class DataForm extends Model
             $id_array[] = $item->lodge_id;
         }
 
-        \Yii::debug($id_array);
 
         $lodges = Lodges::find()
             ->select('*')
             ->from('lodges')
 //            ->innerJoin('booking', 'booking.lodge_id = lodges.id')
-            ->where(['>=', 'sleeping_places', $this->quantity])
+            ->where(['>=', 'sleeping_places', $this->quantity_adults])
+            ->andWhere(['>=', 'add_places', $this->quantity_kids])
             ->andWhere(['not in','id', $id_array])
             ->all();
-//
-        \Yii::debug($subquery);
-        \Yii::debug($lodges);
-//        \Yii::debug($this->dates);
-//        \Yii::debug($this->quantity);
 
 
         return $lodges;
     }
+
 
 }

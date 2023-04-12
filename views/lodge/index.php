@@ -5,7 +5,6 @@
 
 use yii\web\View;
 use app\models\Lodges;
-use app\widgets\LodgeWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -16,58 +15,36 @@ $name_title = "Бронирование";
 
 ?>
 
+    <div class="lodge_card-container center">
 
-    <div class="fixed-container">
-        <div>Сортировать по:</div>
-        <div class="sort_price">
-            <div>цене </div>
-            <div class="sort_icons">
-                <a><img class="icon_sort" src="/web/img/icons/sort-up.png"/></a>
-                <a><img class="icon_sort" src="/web/img/icons/sort-down.png"/></a>
-            </div>
-        </div>
-        <div class="sort_quant">
-            <div>вместимости </div>
-            <div class="sort_icons">
-                <a><img class="icon_sort" src="/web/img/icons/sort-up.png"/></a>
-                <a><img class="icon_sort" src="/web/img/icons/sort-down.png"/></a>
-            </div>        </div>
-    </div>
-    <div class="lodge_card-container">
+        <h6 class="h6">ВВЕДИТЕ ПАРАМЕТРЫ ДЛЯ ОНЛАЙН-БРОНИРОВАНИЯ</h6>
 
         <?php $form = ActiveForm::begin([
-            'action' => Url::to(['lodge/emptydata']),
+            'action' => Url::to(['lodge/freedata']),
             'options' => ['class' => 'form'],
         ]); ?>
 
             <div class="сalendar_row-filter">
+
                 <div class="margin-right">
-                    <label class="form-label" for="DataForm[dates]">Дата заезда - выезда</label>
+                    <label class="form-label" for="DataForm[dates]">Дата заезда - выезда:</label>
                     <input class="form-control" name="DataForm[dates]" id="date" />
                 </div>
                 <div class="margin-right">
-                    <label class="form-label" for="DataForm[quantity]">Количество человек</label>
-                    <input value="1" min="1" type="number" name="DataForm[quantity]" id="typeNumber" class="form-control" />
+                    <label class="form-label" for="DataForm[quantity_adults]">Количество взрослых:</label>
+                    <input value="1" min="1" type="number" name="DataForm[quantity_adults]" id="typeNumber" class="form-control" />
+                </div>
+
+                <div class="margin-right">
+                    <label class="form-label" for="DataForm[quantity_kids]">Количество детей 4-12 лет:</label>
+                    <input value="0" min="0" max="10" type="number" name="DataForm[quantity_kids]]" id="typeNumberKids" class="form-control" />
                 </div>
 
                 <?= Html::submitButton('Применить', ['class' => 'btn btn-dark button-find', 'name' => 'filter-button']) ?>
+
             </div>
 
         <?php ActiveForm::end(); ?>
 
-        <?php
-
-        if(empty($lodges)){
-            echo "Ничего не найдено:(";
-        }
-        else{
-            foreach ($lodges as $lodge){
-                echo LodgeWidget::widget([
-                    'lodge' =>$lodge,
-                ]);
-            }
-        }
-
-        ?>
     </div>
 

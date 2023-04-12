@@ -27,6 +27,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/moment.min.js',
+        'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js',
         'js/daterangepicker.js',
         'js/daterangepicker_my.js',
     ];

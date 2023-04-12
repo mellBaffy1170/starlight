@@ -40,6 +40,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Главная', 'url' => ['/main/index']],
+            ['label' => 'Домики', 'url' => ['/main/lodges']],
             ['label' => 'Бронирование', 'url' => ['/lodge/index']],
             ['label' => 'Услуги', 'url' => ['/main/service']],
             ['label' => 'Карта', 'url' => ['/map/index']],

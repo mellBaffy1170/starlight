@@ -5,22 +5,21 @@ namespace app\widgets;
 use yii\base\Widget;
 use yii\helpers\Url;
 
-class LodgeWidget extends Widget
+class LodgeSimpleWidget extends Widget
 {
     public $lodge;
     private $markup;
-    public $datamodel;
 
     public function init() {
         parent::init();
-        $this->markup = $this->createLodgeMarkup($this->lodge, $this->datamodel);
+        $this->markup = $this->createLodgeMarkup($this->lodge);
     }
 
     public function run() {
         return $this->markup;
     }
 
-    private function createLodgeMarkup($lodge, $datamodel){
+    private function createLodgeMarkup($lodge){
         $id = $lodge->id;
         $title = $lodge->title;
         $main_image = $lodge->main_image;
@@ -40,15 +39,6 @@ class LodgeWidget extends Widget
         $children = $lodge->children;
         $pets = $lodge->pets;
 
-        $dates = $datamodel->dates;
-        $quantity_adults = $datamodel->quantity_adults;
-        $quantity_kids = $datamodel->quantity_kids;
-
-        $date_start = mb_substr($dates, 0, 10);
-        $date_end = mb_substr($dates, -10);
-        $date_diff = (strtotime($date_end) - strtotime($date_start))/(60 * 60 * 24);
-
-        $total = $date_diff * ($price * $quantity_adults + $price_4_12 * $quantity_kids);
 
         $d_none = 'display: none';
 
@@ -117,24 +107,7 @@ class LodgeWidget extends Widget
                         <summary>Подробнее</summary>
                         <p class='details'>$description</p>
                     </details>
-                    
-                    <div class='margin-left margin-top'>Дата: $dates</div>
-                    <div  class='margin-left'>$quantity_adults взрослых, $quantity_kids детей</div>
-                    
-                    <div class='card-booking'>
-                        <div><b>Итого: $total BYN</b></div>
-                        <a href=" . Url::to(['lodge/booking', 'lodge_id' => $id,
-                                                            'title' => $title,
-                                                            'date_start' => $date_start,
-                                                            'date_end' => $date_end,
-                                                            'quantity_adults' => $quantity_adults,
-                                                            'quantity_kids' => $quantity_kids,
-                                                            'date_diff' => $date_diff,
-                                                            'total' => $total,
-                                            ]) . ">
-                            <button class='btn btn-dark'>Забронировать</button>
-                        </a>
-                    </div>
+
                 </div>
         ";
     }

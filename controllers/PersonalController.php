@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\GuestCard;
 use app\models\GuestCardForm;
 use app\models\PersonalForm;
+use app\models\ReviewForm;
 use app\models\User;
 use Yii;
 
@@ -28,22 +29,22 @@ class PersonalController extends \yii\web\Controller
         if($model->load(Yii::$app->request->post()) && $model->updateGuestCard()){
             return $this->redirect(['index']);
         }
-
-        return $this->render('index',[
-            'model' => $model
-        ]);
-
-    }
-
-    public function actionGuestcard(){
         $q = new User();
-        \Yii::debug($q->haveGuestCard());
         if ($q->haveGuestCard()){
-            return $this->render('index');
+            return $this->render('index',[
+                'model' => $model
+            ]);
         }
         else{
             return $this->render('guestcard');
         }
+
+    }
+
+    public function actionGuestcard(){
+
+            return $this->render('guestcard');
+
     }
 
     public function  actionAddcard(){
@@ -57,12 +58,16 @@ class PersonalController extends \yii\web\Controller
         ]);
     }
 
-    public function actionHistory(){
-        return $this->render('history');
-    }
+    public function actionAddreview($lodge_id, $booking_id){
+        $model = new ReviewForm();
 
-    public function actionInfo(){
-        return $this->render('info');
+        if($model->load(Yii::$app->request->post()) && $model->addReview($lodge_id, $booking_id)){
+            return $this->redirect(['main/review']);
+        }
+
+        return $this->render('addreview',[
+            'model' => $model
+        ]);
     }
 
 }

@@ -16,9 +16,11 @@ use Yii;
  * @property string $start_date
  * @property string $end_date
  * @property int $number_of_persons
+ * @property int $number_of_kids
  *
  * @property GuestCard $guestCard
  * @property Lodges $lodge
+ * @property Review[] $reviews
  * @property Status $status
  */
 class Booking extends \yii\db\ActiveRecord
@@ -37,8 +39,8 @@ class Booking extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['guest_card_id', 'lodge_id', 'status_id', 'date', 'total_cost', 'start_date', 'end_date', 'number_of_persons'], 'required'],
-            [['guest_card_id', 'lodge_id', 'status_id', 'total_cost', 'number_of_persons'], 'integer'],
+            [['guest_card_id', 'lodge_id', 'status_id', 'date', 'total_cost', 'start_date', 'end_date', 'number_of_persons', 'number_of_kids'], 'required'],
+            [['guest_card_id', 'lodge_id', 'status_id', 'total_cost', 'number_of_persons', 'number_of_kids'], 'integer'],
             [['date', 'start_date', 'end_date'], 'safe'],
             [['guest_card_id'], 'exist', 'skipOnError' => true, 'targetClass' => GuestCard::class, 'targetAttribute' => ['guest_card_id' => 'id']],
             [['lodge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lodges::class, 'targetAttribute' => ['lodge_id' => 'id']],
@@ -61,6 +63,7 @@ class Booking extends \yii\db\ActiveRecord
             'start_date' => 'Start Date',
             'end_date' => 'End Date',
             'number_of_persons' => 'Number Of Persons',
+            'number_of_kids' => 'Number Of Kids',
         ];
     }
 
@@ -82,6 +85,16 @@ class Booking extends \yii\db\ActiveRecord
     public function getLodge()
     {
         return $this->hasOne(Lodges::class, ['id' => 'lodge_id']);
+    }
+
+    /**
+     * Gets query for [[Reviews]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReviews()
+    {
+        return $this->hasMany(Review::class, ['booking_id' => 'id']);
     }
 
     /**
