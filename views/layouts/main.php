@@ -4,6 +4,7 @@
 /** @var string $content */
 
 use app\assets\AppAsset;
+use app\models\User;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
@@ -29,6 +30,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
+<?php $currentRole = User::findIdentity(Yii::$app->user->id)->role; ?>
+
 <header id="header">
     <?php
     NavBar::begin([
@@ -36,34 +39,73 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Главная', 'url' => ['/main/index']],
-            ['label' => 'Домики', 'url' => ['/main/lodges']],
-            ['label' => 'Бронирование', 'url' => ['/lodge/index']],
-            ['label' => 'Услуги', 'url' => ['/main/service']],
-            ['label' => 'Карта', 'url' => ['/map/index']],
-            ['label' => 'Отзывы', 'url' => ['/main/review']],
-            ['label' => 'О нас', 'url' => ['/main/about']]
-        ]
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-nav2'],
-        'items' => [
-            Yii::$app->user->isGuest
-                ? ['label' => 'Войти', 'url' => ['/site/login']]
-                : '<li class="nav-item"><a class="nav-link" href="/web/personal/index">Личный кабинет</a></li>'
-                . '<li class="nav-item">'
-                . Html::beginForm(['/site/logout'])
-                . Html::submitButton(
-                    'Выйти (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'nav-link btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-        ]
-    ]);
+    if($currentRole !== 'admin'){
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav'],
+            'items' => [
+
+                ['label' => 'Главная', 'url' => ['/main/index']],
+                ['label' => 'Домики', 'url' => ['/main/lodges']],
+                ['label' => 'Бронирование', 'url' => ['/lodge/index']],
+                ['label' => 'Услуги', 'url' => ['/main/service']],
+                ['label' => 'Карта', 'url' => ['/map/index']],
+                ['label' => 'Отзывы', 'url' => ['/main/review']],
+                ['label' => 'О нас', 'url' => ['/main/about']]
+            ]
+        ]);
+    }
+    else{
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav'],
+            'items' => [
+                ['label' => 'Пользователи', 'url' => ['/admin/users']],
+                ['label' => 'Гостевые карты', 'url' => ['/admin/guest']],
+                ['label' => 'Домики', 'url' => ['/admin/lodges']],
+                ['label' => 'Фото', 'url' => ['/admin/image']],
+                ['label' => 'Бронирования', 'url' => ['/admin/booking']],
+                ['label' => 'Статусы бр.', 'url' => ['/admin/status']],
+                ['label' => 'Отзывы', 'url' => ['/admin/review']],
+                ['label' => 'План', 'url' => ['/admin/plan']],
+                ['label' => 'Акции', 'url' => ['/admin/actions']],
+            ]
+        ]);
+    }
+
+    if($currentRole !== 'admin') {
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-nav2'],
+            'items' => [
+                Yii::$app->user->isGuest
+                    ? ['label' => 'Войти', 'url' => ['/site/login']]
+                    : '<li class="nav-item"><a class="nav-link" href="/web/personal/index">Личный кабинет</a></li>'
+                    . '<li class="nav-item">'
+                    . Html::beginForm(['/site/logout'])
+                    . Html::submitButton(
+                        'Выйти (' . Yii::$app->user->identity->username . ')',
+                        ['class' => 'nav-link btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>'
+            ]
+        ]);
+    }
+    else{
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-nav3'],
+            'items' => [
+                Yii::$app->user->isGuest
+                    ? ['label' => 'Войти', 'url' => ['/site/login']]
+                    : '<li class="nav-item">'
+                    . Html::beginForm(['/site/logout'])
+                    . Html::submitButton(
+                        'Выйти (' . Yii::$app->user->identity->username . ')',
+                        ['class' => 'nav-link btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>'
+            ]
+        ]);
+    }
     NavBar::end();
     ?>
 </header>

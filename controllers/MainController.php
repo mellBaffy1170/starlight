@@ -1,8 +1,11 @@
 <?php
 
 namespace app\controllers;
+use app\models\FilterForm;
 use app\models\Lodges;
 use app\models\Review;
+use Yii;
+use yii\data\Sort;
 use yii\web\Controller;
 
 class MainController extends Controller
@@ -14,9 +17,31 @@ class MainController extends Controller
 
     public function actionLodges()
     {
-        $lodges_simple = Lodges::getAll();
+        $sort = new Sort([
+            'attributes' => [
+                'price'=> [
+                    'asc' => ['price' => SORT_ASC],
+                    'desc' => ['price' => SORT_DESC],
+                    'default' => SORT_ASC,
+                    'label' => 'Сортировать по цене',
+                ]
+            ],
+        ]);
+
+
+        $lodges = Lodges::find()
+            ->orderBy($sort->orders)
+            ->all();
+
+        $model = new FilterForm();
+        if ($model->load(Yii::$app->request->post())) {
+            $lodges = $model->filter();
+        }
+
         return $this->render('lodges', [
-            'lodges' => $lodges_simple,
+            'lodges' => $lodges,
+            'model' => $model,
+            'sort' => $sort,
         ]);
     }
 
@@ -37,5 +62,45 @@ class MainController extends Controller
     {
         return $this->render('about');
     }
+
+    public function actionSortasc()
+    {
+        $sort = new Sort([
+            'attributes' => [
+                'price',
+            ],
+        ]);
+
+        $lodges_sortASC = Lodges::find()
+            ->orderBy(['price' => SORT_ASC])
+            ->all();
+
+        return $this->render('lodges',[
+            'lodges' => $lodges_sortASC,
+            'sort' => $sort,
+        ]);
+    }
+
+    public function actionSortdesc()
+    {
+
+    }
+
+//    public function actionFilter(){
+//
+////        $model = new FilterForm();
+////
+////        $lodges_filter = [];
+////
+////        if ($model->load(Yii::$app->request->post())) {
+////            $lodges_filter = $model->filter();
+////        }
+//
+//
+//        return $this->render('lodges',[
+//            'lodges' => $lodges_filter,
+//            'model' => $model,
+//        ]);
+//    }
 
 }

@@ -6,7 +6,9 @@ use app\models\Booking;
 use app\models\DataForm;
 use app\models\FilterForm;
 use app\models\GuestCard;
+use app\models\GuestCardForm;
 use app\models\Lodges;
+use app\models\LoginForm;
 use app\models\User;
 use app\widgets\Alert;
 use Yii;
@@ -43,6 +45,30 @@ class LodgeController extends Controller
 
     public function actionBooking($lodge_id, $title, $date_start, $date_end, $quantity_adults, $quantity_kids, $date_diff, $total)
     {
+        if(Yii::$app->user->isGuest){
+            $message = 'Для возможности онлайн-бронирования необходимо авторизоваться и заполнить гостевую карту';
+
+            $model = new LoginForm();
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                $currentRole = User::findIdentity(Yii::$app->user->id)->role;
+                if($currentRole == 'admin'){
+                    return $this->redirect(['/admin/default/index']);
+                }
+            }
+
+            return $this->render('..\site\login', [
+                'message' => $message,
+                'model' => $model,
+            ]);
+        }
+
+        $u = new User();
+        if(!$u->haveGuestCard()){
+            $model = new GuestCardForm();
+            return $this->render('..\personal\guestcard', [
+                'model' => $model,
+            ]);
+        }
         return $this->render('booking', [
             'lodge_id' => $lodge_id,
             'title' => $title,

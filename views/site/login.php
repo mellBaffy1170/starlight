@@ -3,6 +3,7 @@
 /** @var yii\web\View $this */
 /** @var yii\bootstrap5\ActiveForm $form */
 /** @var app\models\LoginForm $model */
+/** @var string $message */
 
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
@@ -13,6 +14,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
+
+    <?php
+        if ($message !== null) {
+            echo "<p style='color:red'>$message</p>";
+        }
+    ?>
 
     <p>Для входа заполните следующие поля:</p>
 

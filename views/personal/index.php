@@ -7,6 +7,7 @@
 use app\models\Booking;
 use app\models\GuestCard;
 use app\models\User;
+use app\widgets\BookingActiveWidget;
 use app\widgets\BookingWidget;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
@@ -20,6 +21,9 @@ use yii\bootstrap5\Html;
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">История бронирования</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab" aria-controls="profile" aria-selected="false">Активные брони</button>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -57,13 +61,9 @@ use yii\bootstrap5\Html;
                 ->where(['user_id' => $currentId])
                 ->all();
             $guest_card_id = $guest_card_id_array[0]->id;
-            $user_booking = Booking::find()
-                ->select('*')
-                ->from('booking')
-                ->where(['guest_card_id' => $guest_card_id])
-                ->all();
 
-            $today = date("y-m-d");
+            $today = date("Y-m-d");
+
             $close_booking = Booking::find()
                 ->select('*')
                 ->from('booking')
@@ -71,18 +71,39 @@ use yii\bootstrap5\Html;
                 ->andWhere(['<=', 'end_date', $today])
                 ->all();
 
-            if(empty($user_booking)){
-                echo "<h4>Бронирований пока нет:(</h4>";
+            if(empty($close_booking)){
+                echo "<h4>История бронирования пуста</h4>";
             }
             else {
-                foreach ($user_booking as $item) {
+                foreach ($close_booking as $item) {
                     echo BookingWidget::widget([
                         'booking' => $item,
-                        'close_booking' => $close_booking,
                     ]);
                 }
             }
 
+        ?>
+    </div>
+    <div class="tab-pane fade" id="active" role="tabpanel" aria-labelledby="profile-tab">
+        <?php
+
+        $active_booking = Booking::find()
+            ->select('*')
+            ->from('booking')
+            ->where(['guest_card_id' => $guest_card_id])
+            ->andWhere(['>', 'end_date', $today])
+            ->all();
+
+        if(empty($active_booking)){
+            echo "<h4>Активных бронирований пока нет:(</h4>";
+        }
+        else {
+            foreach ($active_booking as $item) {
+                echo BookingActiveWidget::widget([
+                    'booking' => $item,
+                ]);
+            }
+        }
         ?>
     </div>
 </div>

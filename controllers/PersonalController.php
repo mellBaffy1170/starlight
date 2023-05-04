@@ -13,6 +13,9 @@ class PersonalController extends \yii\web\Controller
 {
     public function actionIndex()
     {
+        $q = new User();
+        $flag = $q->haveGuestCard();
+
         $currentId = User::findIdentity(Yii::$app->user->id)->id;
         $currentGuest = GuestCard::find()
             ->select('*')
@@ -29,14 +32,17 @@ class PersonalController extends \yii\web\Controller
         if($model->load(Yii::$app->request->post()) && $model->updateGuestCard()){
             return $this->redirect(['index']);
         }
-        $q = new User();
-        if ($q->haveGuestCard()){
+
+        if ($flag){
             return $this->render('index',[
                 'model' => $model
             ]);
         }
         else{
-            return $this->render('guestcard');
+            $model = new GuestCardForm();
+            return $this->render('guestcard', [
+                'model' => $model,
+            ]);
         }
 
     }

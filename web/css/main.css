@@ -12,6 +12,12 @@
     width: 655px;
 }
 
+.navbar-nav3{
+    display: flex;
+    justify-content: flex-end;
+    width: 330px;
+}
+
 /*Booking/Index*/
 
 .fixed-container{
@@ -123,6 +129,8 @@
 
 /*карточка бронирования в личном кабинете*/
 .check_card_container{
+    display: flex;
+    flex-direction: row;
     margin: 20px 30px;
     padding: 20px 30px;
     background: rgb(255, 255, 255);
@@ -176,7 +184,8 @@
 .review-icon{
     width: 20px;
     height: 20px;
-    margin-right: 2px;
+    margin-right: 4px;
+    margin-left: 10px;
 }
 
 .review-rating{
@@ -221,4 +230,20 @@
 
 .lodges-container{
     margin-left: 250px;
+}
+
+.booking_img_container{
+    width: 30%;
+
+    margin-right: 40px;
+}
+
+.booking_img{
+    height: 330px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.booking_content{
+    width: 70%;
 }

@@ -73,11 +73,24 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function haveGuestCard(){
         $currentId = User::findIdentity(Yii::$app->user->id)->id;
+        $currentEmail = User::findIdentity(Yii::$app->user->id)->email;
+        $haveEmail = GuestCard::find()
+            ->select('*')
+            ->from('guest_card')
+            ->where(['email' => $currentEmail])
+            ->one();
+        if($haveEmail != null){
+            $haveEmail->user_id = $currentId;
+            $haveEmail->save();
+        }
+
         $have = GuestCard::find()
             ->select('first_name')
             ->from('guest_card')
             ->where(['user_id' => $currentId])
             ->all();
+
+
         if ($have != null){
             return true;
         }

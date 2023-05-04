@@ -18,7 +18,10 @@ class GuestCardForm extends Model
         return [
             [['lastName', 'firstName', 'phoneNumber'], 'required', 'message' => '*Обязательное поле'],
             [['lastName', 'firstName'], 'string', 'min' => 3, 'max' => 50, 'message' => '*Строка длиной от 3 до 50 символов'],
-            [['phoneNumber'], 'string', 'min' => 13, 'max' => 13, 'message' => '*Строка длиной 13 символов']
+            [['phoneNumber'], 'string', 'min' => 13, 'max' => 13, 'message' => '*Строка длиной 13 символов'],
+            [['lastName'], 'match', 'pattern' => '/^([А-Я]{1}[а-яё]{1,23}|[A-Z]{1}[a-z]{1,23})$/', 'message' => '*Пример заполнения фамилии Трошко или Klinton'],
+            [['firstName'], 'match', 'pattern' => '/^([А-Я]{1}[а-яё]{1,23}|[A-Z]{1}[a-z]{1,23})$/', 'message' => '*Пример заполнения имени Валерия или Ann'],
+            [['phoneNumber'], 'match', 'pattern' => '/^(\+375)(29|25|44|33)(\d{3})(\d{2})(\d{2})$/', 'message' => '*Пример заполнения номера +375298277417'],
         ];
     }
 

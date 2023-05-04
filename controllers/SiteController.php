@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\RegisterForm;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -91,6 +92,10 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 //            return $this->goBack();
+            $currentRole = User::findIdentity(Yii::$app->user->id)->role;
+            if($currentRole == 'admin'){
+                return $this->redirect(['/admin/default/index']);
+            }
             return $this->redirect(['personal/index']);
         }
 

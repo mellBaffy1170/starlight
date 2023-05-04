@@ -13,7 +13,6 @@ use yii\helpers\Url;
 class BookingWidget extends Widget
 {
     public $booking;
-    public $close_booking;
     private $markup;
 
     public function init() {
@@ -36,6 +35,10 @@ class BookingWidget extends Widget
         $end_date = $booking->end_date;
         $number_of_persons = $booking->number_of_persons;
         $number_of_kids = $booking->number_of_kids;
+
+        $start_date_new = date("d.m.Y", strtotime($start_date));
+        $end_date_new = date("d.m.Y", strtotime($end_date));
+
 
         $total_number = $number_of_persons + $number_of_kids;
 
@@ -60,55 +63,65 @@ class BookingWidget extends Widget
             ->where(['id' => $lodge_id])
             ->all();
         $lodge_title = $lodge_title_array[0]->title;
+
+        $lodge_img_array = Lodges::find()
+            ->select('main_image')
+            ->from('lodges')
+            ->where(['id' => $lodge_id])
+            ->all();
+        $lodge_img = $lodge_img_array[0]->main_image;
+
         $date_diff = (strtotime($end_date) - strtotime($start_date))/(60 * 60 * 24);
 
-        $review_all = Review::getAll();
+        $review_all = Review::find()
+            ->select(['booking_id'])
+            ->from('review')
+            ->all();
+
+        $review_bookind_id = array();
+
+        foreach ($review_all as $item){
+            $review_bookind_id[] = $item->booking_id;
+        }
+
+        Yii::debug($review_bookind_id);
 
         $review_btn = '';
 
-
-        foreach ($this->close_booking as $item) {
-            if($booking == $item){
-
-                foreach ($review_all as $review){
-                    if($review->booking_id == $id){
-
-                        Yii::debug($id);
-                        $review_btn = '<div>Вы уже оставили отзыв на это бронирование</div>';
-
-                    }
-                    else{
-
-                        $review_btn = '<a href=' . Url::to(['personal/addreview', 'lodge_id' => $lodge_id,
+                if(in_array($id, $review_bookind_id)){
+                    $review_btn = '<div>Вы уже оставили отзыв на это бронирование</div>';
+                }
+                else{
+                    $review_btn = '<a href=' . Url::to(['personal/addreview', 'lodge_id' => $lodge_id,
                                 'booking_id' => $id,
                             ]) . '><button class="btn btn-outline-dark">Оставить отзыв</button></a>';
-
-                    }
                 }
 
-            }
-        }
+
 
 
         return "<div class = check_card_container>
-        <div class = 'check_head'>
-            <div>
-                <div>Заезд: </div>
-                <div>$start_date</div>
+        <div class='booking_img_container' ><img src='../../web/$lodge_img' alt='' class='booking_img'></div>
+        <div class='booking_content'>
+            <div class = 'check_head'>
+                <div>
+                    <h6>Заезд: </h6>
+                    <h4>$start_date_new</h4>
+                </div>
+                <div class='check-exit'>
+                    <h6>Выезд: </h6>
+                    <h4>$end_date_new</h4>
+                </div>
             </div>
-            <div class='check-exit'>
-                <div>Выезд: </div>
-                <div>$end_date</div>
+            <h4>$lodge_title</h4>
+            <h5>Бронирование на имя: <i> $last_name $first_name </i></h5>
+            <h6 class='margin-top'>Бронирование на $date_diff суток, на $total_number человека</h6>
+            <div>(Взрослых: $number_of_persons</div>
+            <div>Детей: $number_of_kids)</div>
+            <div class = 'check-footer'>
+                <h4 class='margin-top'>Итоговая стоимость: $total_cost BYN</h4>
+                $review_btn
             </div>
-        </div>
-        <h4>$lodge_title</h4>
-        <h5>Бронирование на имя: <i> $last_name $first_name </i></h5>
-        <h6 class='margin-top'>Бронирование на $date_diff суток, на $total_number человека</h6>
-        <div>(Взрослых: $number_of_persons</div>
-        <div>Детей: $number_of_kids)</div>
-        <div class = 'check-footer'>
-            <h4 class='margin-top'>Итоговая стоимость: $total_cost BYN</h4>
-            $review_btn
         </div>
         
     </div>

@@ -27,6 +27,7 @@ class ReviewWidget extends Widget
         $booking_id = $review->booking_id;
         $content = $review->content;
         $rating = $review->rating;
+        $username = User::findIdentity($user_id)->username;
 
         $lodge = Lodges::findOne($lodge_id);
         $lodge_image = $lodge->main_image;
@@ -36,6 +37,7 @@ class ReviewWidget extends Widget
                     <img class='review-image' src='/web/$lodge_image' alt='lodge photo'>
                     <h5 class='review-h5'>$lodge_title</h5>
                     <div class='review-rating'>
+                        <div>$username</div>
                         <img class='review-icon' src='/web/img/icons/star.png' alt=''>
                         <div>$rating</div>
                     </div>
